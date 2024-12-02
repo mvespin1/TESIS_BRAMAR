@@ -6,16 +6,16 @@ use crate::{
 use indexmap::IndexMap;
 
 pub const RECURSIVE_KW: &str = "fork";
-const NEW_FN_SEP: &str = "__bend";
+const NEW_FN_SEP: &str = "__bramar";
 
 impl Ctx<'_> {
-  pub fn desugar_bend(&mut self) -> Result<(), Diagnostics> {
+  pub fn desugar_bramar(&mut self) -> Result<(), Diagnostics> {
     let mut new_defs = IndexMap::new();
     for def in self.book.defs.values_mut() {
       let mut fresh = 0;
       for rule in def.rules.iter_mut() {
         if let Err(err) =
-          rule.body.desugar_bend(&def.name, &mut fresh, &mut new_defs, def.source.clone(), def.check)
+          rule.body.desugar_bramar(&def.name, &mut fresh, &mut new_defs, def.source.clone(), def.check)
         {
           self.info.add_function_error(err, def.name.clone(), def.source.clone());
           break;
@@ -30,7 +30,7 @@ impl Ctx<'_> {
 }
 
 impl Term {
-  fn desugar_bend(
+  fn desugar_bramar(
     &mut self,
     def_name: &Name,
     fresh: &mut usize,
@@ -39,18 +39,18 @@ impl Term {
     check: bool,
   ) -> Result<(), String> {
     maybe_grow(|| {
-      // Recursively encode bends in the children
+      // Recursively encode bramars in the children
       for child in self.children_mut() {
-        child.desugar_bend(def_name, fresh, new_defs, source.clone(), check)?;
+        child.desugar_bramar(def_name, fresh, new_defs, source.clone(), check)?;
       }
 
-      // Convert a bend into a new recursive function and call it.
-      if let Term::Bend { .. } = self {
+      // Convert a bramar into a new recursive function and call it.
+      if let Term::Bramar { .. } = self {
         // Can't have unmatched unscoped because this'll be extracted
         if self.has_unscoped_diff() {
-          return Err("Can't have non self-contained unscoped variables in a 'bend'".into());
+          return Err("Can't have non self-contained unscoped variables in a 'bramar'".into());
         }
-        let Term::Bend { bnd, arg, cond, step, base } = self else { unreachable!() };
+        let Term::Bramar { bnd, arg, cond, step, base } = self else { unreachable!() };
 
         let new_nam = Name::new(format!("{}{}{}", def_name, NEW_FN_SEP, fresh));
         *fresh += 1;
@@ -76,7 +76,7 @@ impl Term {
           nxt: Box::new(std::mem::take(step.as_mut())),
         };
 
-        // Create the function body for the bend.
+        // Create the function body for the bramar.
         let body = Term::Swt {
           arg: Box::new(std::mem::take(cond)),
           bnd: Some(Name::new("_")),

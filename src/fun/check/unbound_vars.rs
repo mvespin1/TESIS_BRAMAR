@@ -1,6 +1,6 @@
 use crate::{
   diagnostics::Diagnostics,
-  fun::{transform::desugar_bend, Ctx, Name, Pattern, Term},
+  fun::{transform::desugar_bramar, Ctx, Name, Pattern, Term},
   maybe_grow,
 };
 use std::collections::HashMap;
@@ -107,12 +107,12 @@ impl std::fmt::Display for UnboundVarErr {
   fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
     match self {
       UnboundVarErr::Local(var) => {
-        if var == desugar_bend::RECURSIVE_KW {
+        if var == desugar_bramar::RECURSIVE_KW {
           write!(
             f,
-            "Unbound variable '{}'.\n    Note: '{}' is only a keyword inside the 'when' arm of a 'bend'.",
+            "Unbound variable '{}'.\n    Note: '{}' is only a keyword inside the 'when' arm of a 'bramar'.",
             var,
-            desugar_bend::RECURSIVE_KW
+            desugar_bramar::RECURSIVE_KW
           )
         } else if let Some((pre, suf)) = var.rsplit_once('-') {
           write!(

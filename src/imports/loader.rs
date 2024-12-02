@@ -61,7 +61,7 @@ impl DefaultLoader {
     if !self.is_loaded(&file_path) {
       self.loaded.insert(file_path.clone());
 
-      let path = path.with_extension("bend");
+      let path = path.with_extension("bramar");
       let Some(code) = std::fs::read_to_string(path).ok() else { return Ok(None) };
       src.insert(file_path.clone(), code);
     }
@@ -96,7 +96,7 @@ impl DefaultLoader {
     let mut src = IndexMap::new();
     let (mut file, mut dir) = (None, None);
 
-    if full_path.with_extension("bend").is_file() {
+    if full_path.with_extension("bramar").is_file() {
       file = self.read_file(&full_path, path.as_ref(), &mut src)?;
     }
 
@@ -120,7 +120,7 @@ impl DefaultLoader {
           for entry in full_path.read_dir().unwrap().flatten() {
             let file = PathBuf::from(&entry.file_name());
 
-            if let Some("bend") = file.extension().and_then(|f| f.to_str()) {
+            if let Some("bramar") = file.extension().and_then(|f| f.to_str()) {
               let file = file.file_stem().unwrap().to_string_lossy();
               if let Some(name) = self.read_file_in_folder(&full_path, path, &file, &mut src)? {
                 names.insert(Name::new(file), name);
@@ -150,7 +150,7 @@ impl DefaultLoader {
   }
 }
 
-pub const BEND_PATH: &[&str] = &[""];
+pub const BRAMAR_PATH: &[&str] = &[""];
 
 impl PackageLoader for DefaultLoader {
   fn load(&mut self, import: &mut Import) -> Result<Sources, String> {
@@ -161,7 +161,7 @@ impl PackageLoader for DefaultLoader {
     let folders = if *relative {
       vec![self.local_path.clone()]
     } else {
-      BEND_PATH.iter().map(|p| self.local_path.join(p)).collect()
+      BRAMAR_PATH.iter().map(|p| self.local_path.join(p)).collect()
     };
 
     for base in folders {

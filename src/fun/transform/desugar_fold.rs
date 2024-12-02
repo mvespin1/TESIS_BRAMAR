@@ -8,7 +8,7 @@ use crate::{
 
 impl Ctx<'_> {
   /// Desugars `fold` expressions into recursive `match`es.
-  /// ```bend
+  /// ```bramar
   /// foo xs =
   ///   ...
   ///   fold bind = init with x1 x2 {
@@ -17,7 +17,7 @@ impl Ctx<'_> {
   ///   }
   /// ```
   /// Desugars to:
-  /// ```bend
+  /// ```bramar
   /// foo xs =
   ///   ...
   ///   (foo__fold0 init x1 x2 free_var)

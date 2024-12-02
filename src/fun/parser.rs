@@ -869,8 +869,8 @@ impl<'a> FunParser<'a> {
         return Ok(Term::Fold { arg: Box::new(arg), bnd, with_bnd, with_arg, arms });
       }
 
-      // Bend
-      if self.try_parse_keyword("bend") {
+      // Bramar
+      if self.try_parse_keyword("bramar") {
         unexpected_tag(self)?;
         let args = self.list_like(
           |p| {
@@ -896,7 +896,7 @@ impl<'a> FunParser<'a> {
         self.consume(":")?;
         let base = self.parse_term()?;
         self.consume("}")?;
-        return Ok(Term::Bend {
+        return Ok(Term::Bramar {
           bnd: bind,
           arg: init,
           cond: Box::new(cond),

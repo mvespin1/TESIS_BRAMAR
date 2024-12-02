@@ -268,7 +268,7 @@ def IO/bind(a: IO(A), b: ((Id -> Id) -> A -> IO(B))) -> IO(B):
 #
 # Always returns a `Result` where the error is an `IOError`, a type
 # that either contains an internal error of the IO function, like an
-# `errno` in the case of FS functions, or a general Bend IO error,
+# `errno` in the case of FS functions, or a general Bramar IO error,
 # like a type error if the arguments are invalid or a name error if
 # the called IO is not found.
 def IO/call(func: String, argm: Any) -> IO(Result(Any, IOError(Any))):

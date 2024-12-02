@@ -1,7 +1,7 @@
 pub mod apply_args;
 pub mod definition_merge;
 pub mod definition_pruning;
-pub mod desugar_bend;
+pub mod desugar_bramar;
 pub mod desugar_fold;
 pub mod desugar_match_defs;
 pub mod desugar_open;

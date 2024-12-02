@@ -231,7 +231,7 @@ impl<'t, 'l> EncodeTermState<'t, 'l> {
         | Term::With { .. } // Removed in earlier pass
         | Term::Ask { .. } // Removed in earlier pass
         | Term::Mat { .. } // Removed in earlier pass
-        | Term::Bend { .. } // Removed in desugar_bend
+        | Term::Bramar { .. } // Removed in desugar_bramar
         | Term::Fold { .. } // Removed in desugar_fold
         | Term::Open { .. } // Removed in desugar_open
         | Term::Nat { .. } // Removed in encode_nat

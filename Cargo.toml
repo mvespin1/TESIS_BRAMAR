@@ -1,5 +1,5 @@
 [package]
-name = "bend-lang"
+name = "bramar-lang"
 description = "A high-level, massively parallel programming language"
 license = "Apache-2.0"
 version = "0.2.37"
@@ -8,11 +8,11 @@ rust-version = "1.74"
 exclude = ["tests/"]
 
 [lib]
-name = "bend"
+name = "bramar"
 path = "src/lib.rs"
 
 [[bin]]
-name = "bend"
+name = "bramar"
 path = "src/main.rs"
 required-features = ["cli"]
 

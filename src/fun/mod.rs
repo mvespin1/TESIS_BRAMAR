@@ -212,7 +212,7 @@ pub enum Term {
     with_arg: Vec<Term>,
     arms: Vec<MatchRule>,
   },
-  Bend {
+  Bramar {
     bnd: Vec<Option<Name>>,
     arg: Vec<Term>,
     cond: Box<Term>,
@@ -426,7 +426,7 @@ impl Clone for Term {
         with_arg: with_arg.clone(),
         arms: arms.clone(),
       },
-      Self::Bend { bnd: bind, arg: init, cond, step, base } => Self::Bend {
+      Self::Bramar { bnd: bind, arg: init, cond, step, base } => Self::Bramar {
         bnd: bind.clone(),
         arg: init.clone(),
         cond: cond.clone(),
@@ -576,7 +576,7 @@ impl Term {
 
   /* Iterators */
   pub fn children(&self) -> impl DoubleEndedIterator<Item = &Term> + Clone {
-    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bend, Fold });
+    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bramar, Fold });
     match self {
       Term::Mat { arg, bnd: _, with_bnd: _, with_arg, arms } => {
         ChildrenIter::Mat([arg.as_ref()].into_iter().chain(with_arg.iter()).chain(arms.iter().map(|r| &r.2)))
@@ -584,8 +584,8 @@ impl Term {
       Term::Swt { arg, bnd: _, with_bnd: _, with_arg, pred: _, arms } => {
         ChildrenIter::Swt([arg.as_ref()].into_iter().chain(with_arg.iter()).chain(arms))
       }
-      Term::Bend { bnd: _, arg: init, cond, step, base } => {
-        ChildrenIter::Bend(init.iter().chain([cond.as_ref(), step.as_ref(), base.as_ref()]))
+      Term::Bramar { bnd: _, arg: init, cond, step, base } => {
+        ChildrenIter::Bramar(init.iter().chain([cond.as_ref(), step.as_ref(), base.as_ref()]))
       }
       Term::Fold { bnd: _, arg, with_bnd: _, with_arg, arms } => {
         ChildrenIter::Fold([arg.as_ref()].into_iter().chain(with_arg.iter()).chain(arms.iter().map(|r| &r.2)))
@@ -612,7 +612,7 @@ impl Term {
   }
 
   pub fn children_mut(&mut self) -> impl DoubleEndedIterator<Item = &mut Term> {
-    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bend, Fold });
+    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bramar, Fold });
     match self {
       Term::Mat { arg, bnd: _, with_bnd: _, with_arg, arms } => ChildrenIter::Mat(
         [arg.as_mut()].into_iter().chain(with_arg.iter_mut()).chain(arms.iter_mut().map(|r| &mut r.2)),
@@ -620,8 +620,8 @@ impl Term {
       Term::Swt { arg, bnd: _, with_bnd: _, with_arg, pred: _, arms } => {
         ChildrenIter::Swt([arg.as_mut()].into_iter().chain(with_arg.iter_mut()).chain(arms))
       }
-      Term::Bend { bnd: _, arg: init, cond, step, base } => {
-        ChildrenIter::Bend(init.iter_mut().chain([cond.as_mut(), step.as_mut(), base.as_mut()]))
+      Term::Bramar { bnd: _, arg: init, cond, step, base } => {
+        ChildrenIter::Bramar(init.iter_mut().chain([cond.as_mut(), step.as_mut(), base.as_mut()]))
       }
       Term::Fold { bnd: _, arg, with_bnd: _, with_arg, arms } => ChildrenIter::Fold(
         [arg.as_mut()].into_iter().chain(with_arg.iter_mut()).chain(arms.iter_mut().map(|r| &mut r.2)),
@@ -659,8 +659,8 @@ impl Term {
     &self,
   ) -> impl DoubleEndedIterator<Item = (&Term, impl DoubleEndedIterator<Item = &Option<Name>> + Clone)> + Clone
   {
-    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bend });
-    multi_iterator!(BindsIter { Zero, One, Mat, Pat, SwtNum, SwtSucc, Bend });
+    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bramar });
+    multi_iterator!(BindsIter { Zero, One, Mat, Pat, SwtNum, SwtSucc, Bramar });
     match self {
       Term::Mat { arg, bnd, with_bnd, with_arg, arms }
       | Term::Fold { bnd, arg, with_bnd, with_arg, arms } => {
@@ -681,11 +681,11 @@ impl Term {
             .chain([(succ, BindsIter::SwtSucc([bnd, pred].into_iter().chain(with_bnd.iter())))]),
         )
       }
-      Term::Bend { bnd: bind, arg: init, cond, step, base } => {
-        ChildrenIter::Bend(init.iter().map(|x| (x, BindsIter::Zero([]))).chain([
-          (cond.as_ref(), BindsIter::Bend(bind.iter())),
-          (step.as_ref(), BindsIter::Bend(bind.iter())),
-          (base.as_ref(), BindsIter::Bend(bind.iter())),
+      Term::Bramar { bnd: bind, arg: init, cond, step, base } => {
+        ChildrenIter::Bramar(init.iter().map(|x| (x, BindsIter::Zero([]))).chain([
+          (cond.as_ref(), BindsIter::Bramar(bind.iter())),
+          (step.as_ref(), BindsIter::Bramar(bind.iter())),
+          (base.as_ref(), BindsIter::Bramar(bind.iter())),
         ]))
       }
 
@@ -721,8 +721,8 @@ impl Term {
     &mut self,
   ) -> impl DoubleEndedIterator<Item = (&mut Term, impl DoubleEndedIterator<Item = &Option<Name>> + Clone)>
   {
-    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bend });
-    multi_iterator!(BindsIter { Zero, One, Mat, SwtNum, SwtSucc, Pat, Bend });
+    multi_iterator!(ChildrenIter { Zero, One, Two, Vec, Mat, Swt, Bramar });
+    multi_iterator!(BindsIter { Zero, One, Mat, SwtNum, SwtSucc, Pat, Bramar });
     match self {
       Term::Mat { arg, bnd, with_bnd, with_arg, arms }
       | Term::Fold { bnd, arg, with_bnd, with_arg, arms } => {
@@ -745,11 +745,11 @@ impl Term {
             .chain([(succ, BindsIter::SwtSucc([&*bnd, &*pred].into_iter().chain(with_bnd.iter())))]),
         )
       }
-      Term::Bend { bnd, arg, cond, step, base } => {
-        ChildrenIter::Bend(arg.iter_mut().map(|x| (x, BindsIter::Zero([]))).chain([
-          (cond.as_mut(), BindsIter::Bend(bnd.iter())),
-          (step.as_mut(), BindsIter::Bend(bnd.iter())),
-          (base.as_mut(), BindsIter::Bend(bnd.iter())),
+      Term::Bramar { bnd, arg, cond, step, base } => {
+        ChildrenIter::Bramar(arg.iter_mut().map(|x| (x, BindsIter::Zero([]))).chain([
+          (cond.as_mut(), BindsIter::Bramar(bnd.iter())),
+          (step.as_mut(), BindsIter::Bramar(bnd.iter())),
+          (base.as_mut(), BindsIter::Bramar(bnd.iter())),
         ]))
       }
 

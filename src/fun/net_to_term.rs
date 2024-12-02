@@ -2,7 +2,7 @@ use crate::{
   diagnostics::{DiagnosticOrigin, Diagnostics, Severity},
   fun::{term_to_net::Labels, Book, FanKind, Name, Num, Op, Pattern, Tag, Term},
   maybe_grow,
-  net::{BendLab, CtrKind, INet, NodeId, NodeKind, Port, SlotId, ROOT},
+  net::{BramarLab, CtrKind, INet, NodeId, NodeKind, Port, SlotId, ROOT},
 };
 use hvm::hvm::Numb;
 use std::collections::{BTreeSet, HashMap, HashSet};
@@ -105,7 +105,7 @@ impl Reader<'_> {
 
   /// Reads a term from a CON node.
   /// Could be a lambda, an application, a CON tuple or a CON tuple elimination.
-  fn read_con(&mut self, next: Port, label: Option<BendLab>) -> Term {
+  fn read_con(&mut self, next: Port, label: Option<BramarLab>) -> Term {
     let node = next.node_id();
     match next.slot() {
       // If we're visiting a port 0, then it is a tuple or a lambda.
@@ -733,10 +733,10 @@ impl std::fmt::Display for ReadbackError {
       ReadbackError::InvalidNumericMatch => write!(f, "Encountered an invalid 'switch'."),
       ReadbackError::InvalidNumericOp => write!(f, "Encountered an invalid numeric operation."),
       ReadbackError::ReachedRoot => {
-        write!(f, "Unable to interpret the HVM result as a valid Bend term. (Reached Root)")
+        write!(f, "Unable to interpret the HVM result as a valid Bramar term. (Reached Root)")
       }
       ReadbackError::Cyclic => {
-        write!(f, "Unable to interpret the HVM result as a valid Bend term. (Cyclic Term)")
+        write!(f, "Unable to interpret the HVM result as a valid Bramar term. (Cyclic Term)")
       }
     }
   }

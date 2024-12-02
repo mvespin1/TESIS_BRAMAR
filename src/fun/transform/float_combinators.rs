@@ -229,7 +229,7 @@ impl Term {
       Term::Num { .. } => 0,
       Term::Ref { .. } => 0,
       Term::Era => 0,
-      Term::Bend { .. }
+      Term::Bramar { .. }
       | Term::Fold { .. }
       | Term::Nat { .. }
       | Term::Str { .. }
@@ -285,7 +285,7 @@ impl Term {
       | Term::Err => FloatIter::Zero([]),
       Term::With { .. }
       | Term::Ask { .. }
-      | Term::Bend { .. }
+      | Term::Bramar { .. }
       | Term::Fold { .. }
       | Term::Open { .. }
       | Term::Def { .. } => {

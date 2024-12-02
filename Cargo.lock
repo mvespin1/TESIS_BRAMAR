@@ -61,7 +61,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bend-lang"
+name = "bramar-lang"
 version = "0.2.37"
 dependencies = [
  "TSPL",

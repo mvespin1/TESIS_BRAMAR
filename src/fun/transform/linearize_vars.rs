@@ -114,7 +114,7 @@ fn dup_name(nam: &Name, uses: u64) -> Name {
 
 impl Term {
   /// Because multiple children can share the same binds, this function is very restricted.
-  /// Should only be called after desugaring bends/folds/matches/switches.
+  /// Should only be called after desugaring bramars/folds/matches/switches.
   pub fn children_mut_with_binds_mut(
     &mut self,
   ) -> impl DoubleEndedIterator<Item = (&mut Term, impl DoubleEndedIterator<Item = &mut Option<Name>>)> {
@@ -157,7 +157,7 @@ impl Term {
       | Term::Err => ChildrenIter::Zero([]),
       Term::Mat { .. } => unreachable!("'match' should be removed in earlier pass"),
       Term::Fold { .. } => unreachable!("'fold' should be removed in earlier pass"),
-      Term::Bend { .. } => unreachable!("'bend' should be removed in earlier pass"),
+      Term::Bramar { .. } => unreachable!("'bramar' should be removed in earlier pass"),
       Term::Open { .. } => unreachable!("'open' should be removed in earlier pass"),
       Term::Def { .. } => unreachable!("'def' should be removed in earlier pass"),
     }

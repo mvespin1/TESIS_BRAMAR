@@ -306,7 +306,7 @@ impl Stmt {
         let term = fun::Term::Fold { arg: Box::new(arg), bnd, with_bnd, with_arg, arms: fun_arms };
         wrap_nxt_assign_stmt(term, nxt, fst_pat, fst_ask)?
       }
-      Stmt::Bend { bnd, arg, cond, step, base, nxt } => {
+      Stmt::Bramar { bnd, arg, cond, step, base, nxt } => {
         let arg = arg.into_iter().map(Expr::to_fun).collect();
         let cond = cond.to_fun();
         let (ask, pat, step, base) = match (step.into_fun()?, base.into_fun()?) {
@@ -315,21 +315,21 @@ impl Stmt {
             (aa && ba, Some(sp), s, b)
           }
           (StmtToFun::Assign(..), StmtToFun::Assign(..)) => {
-            return Err("'bend' branches end with different assignments.".to_string())?;
+            return Err("'bramar' branches end with different assignments.".to_string())?;
           }
           (StmtToFun::Return(..), StmtToFun::Assign(..)) => {
             return Err(
-              "Expected 'else' branch from 'bend' to return, but it ends with assignment.".to_string(),
+              "Expected 'else' branch from 'bramar' to return, but it ends with assignment.".to_string(),
             )?;
           }
           (StmtToFun::Assign(..), StmtToFun::Return(..)) => {
             return Err(
-              "Expected 'else' branch from 'bend' to end with assignment, but it returns.".to_string(),
+              "Expected 'else' branch from 'bramar' to end with assignment, but it returns.".to_string(),
             )?;
           }
         };
         let term =
-          fun::Term::Bend { bnd, arg, cond: Box::new(cond), step: Box::new(step), base: Box::new(base) };
+          fun::Term::Bramar { bnd, arg, cond: Box::new(cond), step: Box::new(step), base: Box::new(base) };
         wrap_nxt_assign_stmt(term, nxt, pat, ask)?
       }
       Stmt::With { typ, bod, nxt } => {

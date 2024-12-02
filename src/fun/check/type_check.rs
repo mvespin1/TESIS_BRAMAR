@@ -546,7 +546,7 @@ fn infer(
     | Term::Str { .. }
     | Term::List { .. }
     | Term::Fold { .. }
-    | Term::Bend { .. }
+    | Term::Bramar { .. }
     | Term::Open { .. }
     | Term::Def { .. }
     | Term::Err => unreachable!("'{term}' while type checking. Should have been removed in earlier pass"),

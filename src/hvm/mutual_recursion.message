@@ -7,7 +7,7 @@ A reference is strict when it's being called ('(Foo x)') or when it's used non-l
 It is lazy when it's an argument ('(x Foo)') or when it's used linearly ('let x = Foo; (x 0)').
 
 [1mTry one of these strategies:[0m
-- Use pattern matching with 'match', 'fold', and 'bend' to automatically lift expressions to lazy references.
+- Use pattern matching with 'match', 'fold', and 'bramar' to automatically lift expressions to lazy references.
 - Replace direct calls with combinators. For example, change:
     'Foo = λa λb (b (λc (Foo a c)) a)'
   to:
@@ -22,5 +22,5 @@ It is lazy when it's an argument ('(x Foo)') or when it's used linearly ('let x 
     'Foo = λf (f Foo Foo)'
 - If disabled, re-enable the default 'float-combinators' and 'linearize-matches' compiler options.
 
-For more information, visit: https://github.com/HigherOrderCO/Bend/blob/main/docs/lazy-definitions.md.
+For more information, visit: https://github.com/HigherOrderCO/Bramar/blob/main/docs/lazy-definitions.md.
 To disable this check, use the "-Arecursion-cycle" compiler option.

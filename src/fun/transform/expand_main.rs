@@ -94,7 +94,7 @@ impl Term {
       | Term::Mat { .. }
       | Term::Swt { .. }
       | Term::Fold { .. }
-      | Term::Bend { .. }
+      | Term::Bramar { .. }
       | Term::Def { .. }
       | Term::Era
       | Term::Err => {}

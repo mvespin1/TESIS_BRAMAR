@@ -133,13 +133,13 @@ pub enum Stmt {
     arms: Vec<Stmt>,
     nxt: Option<Box<Stmt>>,
   },
-  // "bend" ({bind} ("=" {init})? ","?)*
+  // "bramar" ({bind} ("=" {init})? ","?)*
   //   "when" {cond} ":"
   //     {step}
   //   "else" ":"
   //     {base}
   // {nxt}}?
-  Bend {
+  Bramar {
     bnd: Vec<Option<Name>>,
     arg: Vec<Expr>,
     cond: Box<Expr>,

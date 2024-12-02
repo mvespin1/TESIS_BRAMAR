@@ -110,7 +110,7 @@ pub fn desugar_book(
 
   ctx.book.lift_local_defs();
 
-  ctx.desugar_bend()?;
+  ctx.desugar_bramar()?;
   ctx.desugar_fold()?;
   ctx.desugar_with_blocks()?;
 

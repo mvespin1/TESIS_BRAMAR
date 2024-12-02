@@ -71,7 +71,7 @@ impl Stmt {
           nxt.order_kwargs(book, use_map)?;
         }
       }
-      Stmt::Bend { bnd: _, arg, cond, step, base, nxt } => {
+      Stmt::Bramar { bnd: _, arg, cond, step, base, nxt } => {
         for arg in arg {
           arg.order_kwargs(book, use_map)?;
         }

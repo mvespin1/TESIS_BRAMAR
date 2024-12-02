@@ -105,7 +105,7 @@ impl Stmt {
           *self = gen_get(self, substitutions);
         }
       }
-      Stmt::Bend { bnd: _, arg: init, cond, step, base, nxt } => {
+      Stmt::Bramar { bnd: _, arg: init, cond, step, base, nxt } => {
         step.gen_map_get(id);
         base.gen_map_get(id);
         if let Some(nxt) = nxt {

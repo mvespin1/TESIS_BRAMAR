@@ -7,7 +7,7 @@ impl Book {
   /// Inline copies of the declared bind in the `use` expression.
   ///
   /// Example:
-  /// ```bend
+  /// ```bramar
   /// use id = λx x
   /// (id id id)
   ///

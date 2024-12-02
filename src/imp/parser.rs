@@ -551,8 +551,8 @@ impl<'a> ImpParser<'a> {
         self.parse_switch(indent)
       } else if self.starts_with_keyword("fold") {
         self.parse_fold(indent)
-      } else if self.starts_with_keyword("bend") {
-        self.parse_bend(indent)
+      } else if self.starts_with_keyword("bramar") {
+        self.parse_bramar(indent)
       } else if self.starts_with_keyword("with") {
         self.parse_with(indent)
       } else if self.starts_with_keyword("open") {
@@ -947,13 +947,13 @@ impl<'a> ImpParser<'a> {
     }
   }
 
-  /// "bend" (<bind> "=" <init> ","?)* ":"
+  /// "bramar" (<bind> "=" <init> ","?)* ":"
   ///   "when" <cond> ":"
   ///     <step>
   ///   "else" ":"
   ///     <base>
-  fn parse_bend(&mut self, indent: &mut Indent) -> ParseResult<(Stmt, Indent)> {
-    self.parse_keyword("bend")?;
+  fn parse_bramar(&mut self, indent: &mut Indent) -> ParseResult<(Stmt, Indent)> {
+    self.parse_keyword("bramar")?;
     self.skip_trivia_inline()?;
 
     let args = self.list_like(|p| p.parse_match_arg(), "", ":", ",", true, 1)?;
@@ -994,7 +994,7 @@ impl<'a> ImpParser<'a> {
     indent.exit_level();
     if nxt_indent == *indent {
       let (nxt, nxt_indent) = self.parse_statement(indent)?;
-      let stmt = Stmt::Bend {
+      let stmt = Stmt::Bramar {
         bnd: bind,
         arg: init,
         cond: Box::new(cond),
@@ -1004,7 +1004,7 @@ impl<'a> ImpParser<'a> {
       };
       Ok((stmt, nxt_indent))
     } else {
-      let stmt = Stmt::Bend {
+      let stmt = Stmt::Bramar {
         bnd: bind,
         arg: init,
         cond: Box::new(cond),

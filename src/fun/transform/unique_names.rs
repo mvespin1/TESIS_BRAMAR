@@ -102,7 +102,7 @@ impl UniqueNameGenerator {
         *bnd = self.pop(bnd.as_ref());
       }
 
-      Term::Bend { bnd, arg, cond, step, base } => {
+      Term::Bramar { bnd, arg, cond, step, base } => {
         for arg in arg {
           self.unique_names_in_term(arg);
         }

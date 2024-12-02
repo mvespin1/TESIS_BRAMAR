@@ -1,4 +1,4 @@
-use bend::{
+use bramar::{
   check_book, compile_book, desugar_book,
   diagnostics::{Diagnostics, DiagnosticsConfig, Severity},
   fun::{Book, Name},
@@ -105,8 +105,8 @@ struct RunArgs {
   #[arg(help = "Path to the input file")]
   path: PathBuf,
 
-  #[arg(value_parser = |arg: &str| bend::fun::parser::FunParser::new(Name::new(""), arg, false).parse_term())]
-  arguments: Option<Vec<bend::fun::Term>>,
+  #[arg(value_parser = |arg: &str| bramar::fun::parser::FunParser::new(Name::new(""), arg, false).parse_term())]
+  arguments: Option<Vec<bramar::fun::Term>>,
 }
 
 #[derive(Args, Clone, Debug)]
@@ -245,7 +245,7 @@ pub enum WarningArgs {
 
 fn main() -> ExitCode {
   #[cfg(not(feature = "cli"))]
-  compile_error!("The 'cli' feature is needed for the Bend cli");
+  compile_error!("The 'cli' feature is needed for the Bramar cli");
 
   let cli = Cli::parse();
 

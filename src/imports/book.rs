@@ -438,7 +438,7 @@ impl Def for imp::Definition {
             subst_type_ctrs_stmt(nxt, from, to);
           }
         }
-        Stmt::Bend { step, base, nxt, .. } => {
+        Stmt::Bramar { step, base, nxt, .. } => {
           subst_type_ctrs_stmt(step, from, to);
           subst_type_ctrs_stmt(base, from, to);
           if let Some(nxt) = nxt {

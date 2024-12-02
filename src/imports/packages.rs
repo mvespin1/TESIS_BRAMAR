@@ -96,7 +96,7 @@ impl Packages {
       match (&mut import.src, &import.imp_type) {
         (BoundSource::Either(src, pkgs), ImportType::Single(nam, alias)) => {
           if self.unique_top_level_names(src).contains(nam) {
-            let err = format!("Both file '{src}.bend' and folder '{src}' contains the import '{nam}'");
+            let err = format!("Both file '{src}.bramar' and folder '{src}' contains the import '{nam}'");
             diag.add_book_error(err);
             continue;
           }
@@ -130,7 +130,7 @@ impl Packages {
 
           for nam in pkgs.keys() {
             if names.contains(nam) {
-              let err = format!("Both file '{src}.bend' and folder '{src}' contains the import '{nam}'");
+              let err = format!("Both file '{src}.bramar' and folder '{src}' contains the import '{nam}'");
               diag.add_book_error(err);
               error = true;
             }
